@@ -8,10 +8,18 @@ export function checkSupport(): PlexiError | null {
       message: "The voice agent isn't configured. Add VITE_ELEVENLABS_AGENT_ID to .env.local and restart the dev server.",
     };
   }
-  if (typeof RTCPeerConnection === "undefined" || !window.isSecureContext) {
+  // Microphone and WebRTC only exist in a secure context (https:// or localhost). A phone opening the
+  // dev server through the PC's LAN address over plain http lands here.
+  if (!window.isSecureContext) {
     return {
       code: "unsupported-browser",
-      message: "This browser can't run live conversations. Use a current Chrome, Edge, Safari or Firefox over HTTPS.",
+      message: `Voice needs a secure connection. You opened ${window.location.origin} - use https:// (for the dev server: npm run dev:https) or open it on localhost.`,
+    };
+  }
+  if (typeof RTCPeerConnection === "undefined" || !navigator.mediaDevices) {
+    return {
+      code: "unsupported-browser",
+      message: "This browser can't run live conversations. Use a current Chrome, Edge, Safari or Firefox.",
     };
   }
   return null;

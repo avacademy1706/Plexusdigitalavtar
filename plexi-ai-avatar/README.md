@@ -65,10 +65,21 @@ Static build (`dist/`) on Cloudflare Pages, GitHub Pages, Netlify or Vercel free
 | ElevenLabs agent | Free plan has limited conversation minutes and features - **verify current limits in your ElevenLabs account** |
 | Lead form / analytics | Local only (localStorage / console), no external service |
 
+## Testing on a phone
+
+The microphone and WebRTC only work in a *secure context* (`https://` or `localhost`). A phone opening the PC's LAN address over plain `http://` gets no mic prompt and the app says so. Use the HTTPS dev server:
+
+```bash
+npm run dev:https          # https://<your-PC-IP>:5173  (self-signed cert: accept the browser warning once)
+```
+
+Hosted builds are HTTPS already, but the host must have `VITE_ELEVENLABS_AGENT_ID` set as a build-time environment variable (and `ELEVENLABS_API_KEY` for the token function) - without it the app stops at "voice agent isn't configured" before asking for the mic.
+
 ## Troubleshooting
 
 - **"voice agent isn't configured"** - set `VITE_ELEVENLABS_AGENT_ID` in `.env.local`, restart dev server.
 - **"Plexi couldn't be reached"** - agent ID wrong, agent not public, or your domain isn't in the allowlist.
+- **No mic prompt at all (usually on a phone)** - you are not on HTTPS/localhost; see *Testing on a phone*.
 - **Microphone denied** - allow it in browser site settings; typing still works (text-only session).
 - **No sound** - click the page first (autoplay policy) and check device volume.
 - **Answers are wrong / generic** - add the relevant pages or PDFs to the agent's knowledge base.

@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import basicSsl from "@vitejs/plugin-basic-ssl";
 import type { IncomingMessage, ServerResponse } from "node:http";
 
 /**
@@ -55,8 +56,12 @@ function elevenLabsTokenPlugin(env: Record<string, string>): Plugin {
 export default defineConfig(({ mode }) => {
   // loadEnv with an empty prefix also reads non-VITE_ keys (server-side secrets) from .env.local
   const env = loadEnv(mode, process.cwd(), "");
+  // `npm run dev:https` (mode "https"): self-signed TLS + LAN host so phones can test the microphone,
+  // which browsers only allow in a secure context.
+  const https = mode === "https";
   return {
-    plugins: [react(), tailwindcss(), elevenLabsTokenPlugin(env)],
+    plugins: [react(), tailwindcss(), elevenLabsTokenPlugin(env), ...(https ? [basicSsl()] : [])],
+    server: https ? { host: true } : undefined,
     // Relative base so the static build works on GitHub Pages / Cloudflare Pages sub-paths.
     base: "./",
     build: {
