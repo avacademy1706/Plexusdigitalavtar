@@ -1,0 +1,26 @@
+{
+  "name": "lipsync/example_hi_im_plexi",
+  "comment": "Hand-timed example for the line: 'Hi, I'm Plexi, your AI guide.' Times in seconds from audio start.",
+  "cues": [
+    { "t": 0.00, "viseme": "REST" },
+    { "t": 0.08, "viseme": "AI" },
+    { "t": 0.22, "viseme": "E" },
+    { "t": 0.34, "viseme": "REST" },
+    { "t": 0.42, "viseme": "AI" },
+    { "t": 0.56, "viseme": "MBP" },
+    { "t": 0.64, "viseme": "CH_SH" },
+    { "t": 0.74, "viseme": "L" },
+    { "t": 0.84, "viseme": "E" },
+    { "t": 0.94, "viseme": "CH_SH" },
+    { "t": 1.04, "viseme": "E" },
+    { "t": 1.16, "viseme": "REST" },
+    { "t": 1.26, "viseme": "U" },
+    { "t": 1.38, "viseme": "O" },
+    { "t": 1.48, "viseme": "AI" },
+    { "t": 1.62, "viseme": "E" },
+    { "t": 1.74, "viseme": "AI" },
+    { "t": 1.90, "viseme": "FV" },
+    { "t": 2.06, "viseme": "SMILE" }
+  ],
+  "end": 2.4
+}

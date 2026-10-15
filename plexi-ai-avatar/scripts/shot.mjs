@@ -1,0 +1,13 @@
+import puppeteer from "puppeteer-core";
+const [,, qs, out, w="1440", h="900"] = process.argv;
+const b = await puppeteer.launch({ executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
+const p = await b.newPage();
+await p.setViewport({ width: +w, height: +h, deviceScaleFactor: +(process.env.DSF ?? 1) });
+const errs = [];
+p.on("console", (m) => m.type() === "error" && errs.push(m.text()));
+p.on("pageerror", (e) => errs.push(e.message));
+await p.goto("http://localhost:4173/" + qs, { waitUntil: "networkidle2" });
+await new Promise((r) => setTimeout(r, 3000));
+await p.screenshot({ path: out, clip: process.env.CLIP ? JSON.parse(process.env.CLIP) : { x: 300, y: 60, width: 400, height: 380 } });
+console.log(errs.length ? errs.join("\n") : "no errors");
+await b.close();

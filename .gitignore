@@ -1,0 +1,17 @@
+# dependencies / builds
+node_modules/
+dist/
+
+# local secrets and env
+.env
+.env.local
+.env.*.local
+
+# generated QA renders (rebuild with: cd Plexi_Spine4_Talking_Assets && npm run all)
+Plexi_Spine4_Talking_Assets/qa/preview/
+Plexi_Spine4_Talking_Assets/qa/masks/
+
+# misc
+*.log
+.DS_Store
+Thumbs.db

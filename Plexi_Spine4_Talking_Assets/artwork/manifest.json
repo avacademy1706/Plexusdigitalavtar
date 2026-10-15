@@ -1,0 +1,1123 @@
+{
+  "generated": "2026-10-15T10:17:34.606Z",
+  "source": {
+    "file": "Plexi_original_full_reference.png",
+    "width": 300,
+    "height": 860
+  },
+  "canvas": {
+    "width": 1200,
+    "height": 1408,
+    "scale": 4,
+    "crop": {
+      "x": 0,
+      "y": 0,
+      "w": 300,
+      "h": 352
+    },
+    "units": "canvas pixels, origin top-left, y down (multiply original coords by scale)"
+  },
+  "naming": "_L = screen-left, _R = screen-right",
+  "landmarks": {
+    "eyes": {
+      "L": {
+        "center": [
+          590,
+          474
+        ],
+        "irisRadius": 27.2,
+        "openTop": 440.5387359286339,
+        "openBottom": 501.75,
+        "openHeight": 61.21126407136609,
+        "clipPolygon": [
+          [
+            539.3,
+            474
+          ],
+          [
+            542.8,
+            469.3
+          ],
+          [
+            546.3,
+            464.9
+          ],
+          [
+            549.9,
+            460.9
+          ],
+          [
+            553.4,
+            457.2
+          ],
+          [
+            557,
+            453.9
+          ],
+          [
+            560.5,
+            450.9
+          ],
+          [
+            564.1,
+            448.3
+          ],
+          [
+            567.6,
+            446.1
+          ],
+          [
+            571.2,
+            444.2
+          ],
+          [
+            574.7,
+            442.7
+          ],
+          [
+            578.3,
+            441.5
+          ],
+          [
+            581.8,
+            440.8
+          ],
+          [
+            585.4,
+            440.5
+          ],
+          [
+            588.9,
+            440.8
+          ],
+          [
+            592.5,
+            441.8
+          ],
+          [
+            596,
+            443.2
+          ],
+          [
+            599.6,
+            445.2
+          ],
+          [
+            603.1,
+            447.7
+          ],
+          [
+            606.7,
+            450.7
+          ],
+          [
+            610.2,
+            454.2
+          ],
+          [
+            613.8,
+            458.2
+          ],
+          [
+            617.3,
+            462.6
+          ],
+          [
+            620.9,
+            467.6
+          ],
+          [
+            624.4,
+            473
+          ],
+          [
+            628,
+            478.8
+          ],
+          [
+            631.5,
+            485.1
+          ],
+          [
+            628,
+            487.3
+          ],
+          [
+            624.4,
+            489.4
+          ],
+          [
+            620.9,
+            491.4
+          ],
+          [
+            617.3,
+            493.2
+          ],
+          [
+            613.8,
+            494.9
+          ],
+          [
+            610.2,
+            496.5
+          ],
+          [
+            606.7,
+            497.9
+          ],
+          [
+            603.1,
+            499.1
+          ],
+          [
+            599.6,
+            500.2
+          ],
+          [
+            596,
+            501
+          ],
+          [
+            592.5,
+            501.6
+          ],
+          [
+            588.9,
+            501.7
+          ],
+          [
+            585.4,
+            501.2
+          ],
+          [
+            581.8,
+            500.3
+          ],
+          [
+            578.3,
+            499.1
+          ],
+          [
+            574.7,
+            497.7
+          ],
+          [
+            571.2,
+            496.1
+          ],
+          [
+            567.6,
+            494.3
+          ],
+          [
+            564.1,
+            492.3
+          ],
+          [
+            560.5,
+            490.1
+          ],
+          [
+            557,
+            487.8
+          ],
+          [
+            553.4,
+            485.3
+          ],
+          [
+            549.9,
+            482.7
+          ],
+          [
+            546.3,
+            479.9
+          ],
+          [
+            542.8,
+            477
+          ]
+        ]
+      },
+      "R": {
+        "center": [
+          772,
+          484
+        ],
+        "irisRadius": 27.2,
+        "openTop": 454.5,
+        "openBottom": 514.1474269310669,
+        "openHeight": 59.64742693106689,
+        "clipPolygon": [
+          [
+            736.5,
+            493.5
+          ],
+          [
+            739.8,
+            486.9
+          ],
+          [
+            743.1,
+            481
+          ],
+          [
+            746.3,
+            475.5
+          ],
+          [
+            749.6,
+            470.7
+          ],
+          [
+            752.9,
+            466.5
+          ],
+          [
+            756.2,
+            462.9
+          ],
+          [
+            759.5,
+            459.9
+          ],
+          [
+            762.8,
+            457.5
+          ],
+          [
+            766,
+            455.8
+          ],
+          [
+            769.3,
+            454.8
+          ],
+          [
+            772.6,
+            454.5
+          ],
+          [
+            775.9,
+            454.8
+          ],
+          [
+            779.2,
+            455.4
+          ],
+          [
+            782.4,
+            456.4
+          ],
+          [
+            785.7,
+            457.6
+          ],
+          [
+            789,
+            459.2
+          ],
+          [
+            792.3,
+            461
+          ],
+          [
+            795.6,
+            463.2
+          ],
+          [
+            798.8,
+            465.6
+          ],
+          [
+            802.1,
+            468.4
+          ],
+          [
+            805.4,
+            471.4
+          ],
+          [
+            808.7,
+            474.7
+          ],
+          [
+            812,
+            478.2
+          ],
+          [
+            815.3,
+            482.1
+          ],
+          [
+            818.5,
+            486.2
+          ],
+          [
+            821.8,
+            490.6
+          ],
+          [
+            818.5,
+            493.8
+          ],
+          [
+            815.3,
+            496.9
+          ],
+          [
+            812,
+            499.8
+          ],
+          [
+            808.7,
+            502.4
+          ],
+          [
+            805.4,
+            504.9
+          ],
+          [
+            802.1,
+            507.1
+          ],
+          [
+            798.8,
+            509.1
+          ],
+          [
+            795.6,
+            510.9
+          ],
+          [
+            792.3,
+            512.3
+          ],
+          [
+            789,
+            513.4
+          ],
+          [
+            785.7,
+            514.1
+          ],
+          [
+            782.4,
+            514
+          ],
+          [
+            779.2,
+            513.5
+          ],
+          [
+            775.9,
+            512.8
+          ],
+          [
+            772.6,
+            511.9
+          ],
+          [
+            769.3,
+            510.8
+          ],
+          [
+            766,
+            509.6
+          ],
+          [
+            762.8,
+            508.3
+          ],
+          [
+            759.5,
+            506.8
+          ],
+          [
+            756.2,
+            505.2
+          ],
+          [
+            752.9,
+            503.5
+          ],
+          [
+            749.6,
+            501.7
+          ],
+          [
+            746.3,
+            499.8
+          ],
+          [
+            743.1,
+            497.8
+          ],
+          [
+            739.8,
+            495.7
+          ]
+        ]
+      }
+    },
+    "brows": {
+      "L": {
+        "center": [
+          593.5,
+          385.2
+        ]
+      },
+      "R": {
+        "center": [
+          782.8,
+          397.8
+        ]
+      }
+    },
+    "mouth": {
+      "center": [
+        674,
+        620
+      ],
+      "box": [
+        560,
+        580,
+        795,
+        679
+      ],
+      "restWidth": 196
+    },
+    "pivots": {
+      "body": [
+        600,
+        1200
+      ],
+      "neck": [
+        688,
+        856
+      ],
+      "head": [
+        688,
+        704
+      ],
+      "hairFront": [
+        700,
+        240
+      ],
+      "mouth": [
+        674,
+        620
+      ],
+      "drawstringL": [
+        582,
+        872
+      ],
+      "drawstringR": [
+        710,
+        872
+      ]
+    },
+    "drawstrings": {
+      "L": [
+        582,
+        872
+      ],
+      "R": [
+        710,
+        872
+      ]
+    }
+  },
+  "colors": {
+    "skin": "#e47f4a",
+    "hair": "#261813",
+    "sclera": "#f2efec",
+    "lipLine": "#792e0f",
+    "teeth": "#f1e6e4"
+  },
+  "visemes": {
+    "rest": {
+      "w": 44,
+      "h": 0,
+      "lift": 1.2,
+      "thick": 3.2,
+      "tUp": 0,
+      "tLow": 0,
+      "tongue": "none"
+    },
+    "MBP": {
+      "w": 40,
+      "h": 0,
+      "lift": 0.2,
+      "thick": 2.8,
+      "tUp": 0,
+      "tLow": 0,
+      "tongue": "none",
+      "pressed": true
+    },
+    "FV": {
+      "w": 42,
+      "h": 3,
+      "lift": 0.6,
+      "thick": 3.6,
+      "tUp": 3,
+      "tLow": 0,
+      "tongue": "none"
+    },
+    "A": {
+      "w": 44,
+      "h": 13,
+      "lift": 0.5,
+      "thick": 3.4,
+      "tUp": 3.2,
+      "tLow": 0,
+      "tongue": "low"
+    },
+    "E": {
+      "w": 48,
+      "h": 7,
+      "lift": 1.5,
+      "thick": 3,
+      "tUp": 3,
+      "tLow": 1.6,
+      "tongue": "none"
+    },
+    "I": {
+      "w": 50,
+      "h": 4.5,
+      "lift": 2,
+      "thick": 2.8,
+      "tUp": 3,
+      "tLow": 0,
+      "tongue": "none"
+    },
+    "O": {
+      "w": 28,
+      "h": 12,
+      "lift": -0.5,
+      "thick": 3.2,
+      "tUp": 1.6,
+      "tLow": 0,
+      "tongue": "low",
+      "round": 1
+    },
+    "U": {
+      "w": 22,
+      "h": 7,
+      "lift": -0.6,
+      "thick": 3.4,
+      "tUp": 0.8,
+      "tLow": 0,
+      "tongue": "none",
+      "round": 1
+    },
+    "L": {
+      "w": 42,
+      "h": 10,
+      "lift": 0.6,
+      "thick": 3.2,
+      "tUp": 2.6,
+      "tLow": 0,
+      "tongue": "up"
+    },
+    "TH": {
+      "w": 42,
+      "h": 6,
+      "lift": 0.6,
+      "thick": 3.2,
+      "tUp": 2.4,
+      "tLow": 0,
+      "tongue": "between"
+    },
+    "CH_SH": {
+      "w": 34,
+      "h": 7,
+      "lift": 0,
+      "thick": 3.8,
+      "tUp": 2.6,
+      "tLow": 2,
+      "tongue": "none",
+      "round": 0.5
+    },
+    "open": {
+      "w": 46,
+      "h": 18,
+      "lift": 0.3,
+      "thick": 3.6,
+      "tUp": 3.4,
+      "tLow": 0,
+      "tongue": "low"
+    }
+  },
+  "layers": [
+    {
+      "id": "lower_body",
+      "file": "upper_body/lower_body.png",
+      "x": 0,
+      "y": 1360,
+      "w": 1200,
+      "h": 2080,
+      "scale": 1,
+      "kind": "extracted",
+      "slot": "lower_body",
+      "bone": "body",
+      "notes": "Static torso/arms/legs below the bust crop. Drawn behind everything so the figure is complete in a full-body scene."
+    },
+    {
+      "id": "hair_back",
+      "file": "head/hair_back.png",
+      "x": 361,
+      "y": 37,
+      "w": 630,
+      "h": 535,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "hair_back",
+      "bone": "head",
+      "notes": "Flat silhouette behind the hair so secondary hair motion never shows gaps. Repaint with real hair for texture."
+    },
+    {
+      "id": "neck",
+      "file": "head/neck.png",
+      "x": 534,
+      "y": 614,
+      "w": 332,
+      "h": 292,
+      "scale": 1,
+      "kind": "inpainted",
+      "slot": "neck",
+      "bone": "neck",
+      "notes": "Original neck; extended upward behind the chin by diffusion fill."
+    },
+    {
+      "id": "head_base",
+      "file": "head/head_base.png",
+      "x": 364,
+      "y": 40,
+      "w": 633,
+      "h": 678,
+      "scale": 1,
+      "kind": "inpainted",
+      "slot": "head_base",
+      "bone": "head",
+      "notes": "Face, ears, eye outlines, nose; skin reconstructed behind brows, eye openings, mouth and under the hairline."
+    },
+    {
+      "id": "hair_front",
+      "file": "head/hair_front.png",
+      "x": 367,
+      "y": 42,
+      "w": 619,
+      "h": 523,
+      "scale": 1,
+      "kind": "extracted",
+      "slot": "hair_front",
+      "bone": "hair_front",
+      "notes": "All visible hair pixels."
+    },
+    {
+      "id": "eye_white_L",
+      "file": "eyes/eye_white_L.png",
+      "x": 537,
+      "y": 438,
+      "w": 97,
+      "h": 66,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "eye_white_L",
+      "bone": "head",
+      "notes": "Sclera fill with a lid shadow, in the sampled sclera colour."
+    },
+    {
+      "id": "iris_L",
+      "file": "eyes/iris_L.png",
+      "x": 561,
+      "y": 445,
+      "w": 59,
+      "h": 59,
+      "scale": 1,
+      "kind": "inpainted",
+      "slot": "iris_L",
+      "bone": "eye_L",
+      "notes": "Original iris; colour reconstructed behind the pupil/highlight and under the lid."
+    },
+    {
+      "id": "pupil_L",
+      "file": "eyes/pupil_L.png",
+      "x": 570,
+      "y": 454,
+      "w": 41,
+      "h": 41,
+      "scale": 1,
+      "kind": "extracted",
+      "slot": "pupil_L",
+      "bone": "eye_L",
+      "notes": "Original pupil plus its highlight so both move together."
+    },
+    {
+      "id": "eyelid_upper_L",
+      "file": "eyes/eyelid_upper_L.png",
+      "x": 529,
+      "y": 353,
+      "w": 113,
+      "h": 135,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "eyelid_upper_L",
+      "bone": "eyelid_upper_L",
+      "notes": "Skin-tone lid with lash line; sits above the opening at rest, clipped by the eye clip polygon."
+    },
+    {
+      "id": "eyelid_lower_L",
+      "file": "eyes/eyelid_lower_L.png",
+      "x": 529,
+      "y": 471,
+      "w": 113,
+      "h": 118,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "eyelid_lower_L",
+      "bone": "eyelid_lower_L",
+      "notes": "Thin lower lid; moves up for squints."
+    },
+    {
+      "id": "brow_L",
+      "file": "brows/brow_L.png",
+      "x": 522,
+      "y": 361,
+      "w": 139,
+      "h": 62,
+      "scale": 1,
+      "kind": "extracted",
+      "slot": "brow_L",
+      "bone": "brow_L",
+      "notes": "Original eyebrow pixels."
+    },
+    {
+      "id": "eye_white_R",
+      "file": "eyes/eye_white_R.png",
+      "x": 734,
+      "y": 452,
+      "w": 90,
+      "h": 65,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "eye_white_R",
+      "bone": "head",
+      "notes": "Sclera fill with a lid shadow, in the sampled sclera colour."
+    },
+    {
+      "id": "iris_R",
+      "file": "eyes/iris_R.png",
+      "x": 743,
+      "y": 455,
+      "w": 59,
+      "h": 59,
+      "scale": 1,
+      "kind": "inpainted",
+      "slot": "iris_R",
+      "bone": "eye_R",
+      "notes": "Original iris; colour reconstructed behind the pupil/highlight and under the lid."
+    },
+    {
+      "id": "pupil_R",
+      "file": "eyes/pupil_R.png",
+      "x": 752,
+      "y": 464,
+      "w": 41,
+      "h": 41,
+      "scale": 1,
+      "kind": "extracted",
+      "slot": "pupil_R",
+      "bone": "eye_R",
+      "notes": "Original pupil plus its highlight so both move together."
+    },
+    {
+      "id": "eyelid_upper_R",
+      "file": "eyes/eyelid_upper_R.png",
+      "x": 726,
+      "y": 368,
+      "w": 106,
+      "h": 129,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "eyelid_upper_R",
+      "bone": "eyelid_upper_R",
+      "notes": "Skin-tone lid with lash line; sits above the opening at rest, clipped by the eye clip polygon."
+    },
+    {
+      "id": "eyelid_lower_R",
+      "file": "eyes/eyelid_lower_R.png",
+      "x": 726,
+      "y": 488,
+      "w": 106,
+      "h": 112,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "eyelid_lower_R",
+      "bone": "eyelid_lower_R",
+      "notes": "Thin lower lid; moves up for squints."
+    },
+    {
+      "id": "brow_R",
+      "file": "brows/brow_R.png",
+      "x": 721,
+      "y": 371,
+      "w": 126,
+      "h": 71,
+      "scale": 1,
+      "kind": "extracted",
+      "slot": "brow_R",
+      "bone": "brow_R",
+      "notes": "Original eyebrow pixels."
+    },
+    {
+      "id": "mouth_smile",
+      "file": "mouth/mouth_smile.png",
+      "x": 558,
+      "y": 578,
+      "w": 240,
+      "h": 104,
+      "scale": 1,
+      "kind": "extracted",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "The original baked smile - identical to the source at rest."
+    },
+    {
+      "id": "mouth_rest",
+      "file": "mouth/mouth_rest.png",
+      "x": 580,
+      "y": 609,
+      "w": 188,
+      "h": 31,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Closed, relaxed mouth (lip-sync REST)."
+    },
+    {
+      "id": "mouth_MBP",
+      "file": "mouth/mouth_MBP.png",
+      "x": 588,
+      "y": 612,
+      "w": 172,
+      "h": 26,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme MBP (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_FV",
+      "file": "mouth/mouth_FV.png",
+      "x": 584,
+      "y": 612,
+      "w": 180,
+      "h": 42,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme FV (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_A",
+      "file": "mouth/mouth_A.png",
+      "x": 580,
+      "y": 612,
+      "w": 188,
+      "h": 81,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme A (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_E",
+      "file": "mouth/mouth_E.png",
+      "x": 572,
+      "y": 608,
+      "w": 204,
+      "h": 59,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme E (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_I",
+      "file": "mouth/mouth_I.png",
+      "x": 568,
+      "y": 606,
+      "w": 212,
+      "h": 50,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme I (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_O",
+      "file": "mouth/mouth_O.png",
+      "x": 612,
+      "y": 609,
+      "w": 124,
+      "h": 79,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme O (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_U",
+      "file": "mouth/mouth_U.png",
+      "x": 624,
+      "y": 609,
+      "w": 100,
+      "h": 60,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme U (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_L",
+      "file": "mouth/mouth_L.png",
+      "x": 584,
+      "y": 612,
+      "w": 180,
+      "h": 68,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme L (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_TH",
+      "file": "mouth/mouth_TH.png",
+      "x": 584,
+      "y": 612,
+      "w": 180,
+      "h": 52,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme TH (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_CH_SH",
+      "file": "mouth/mouth_CH_SH.png",
+      "x": 600,
+      "y": 610,
+      "w": 148,
+      "h": 60,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme CH_SH (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_open",
+      "file": "mouth/mouth_open.png",
+      "x": 576,
+      "y": 612,
+      "w": 196,
+      "h": 102,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth",
+      "bone": "mouth",
+      "notes": "Viseme open (vector, built to the measured mouth position/width)."
+    },
+    {
+      "id": "mouth_interior",
+      "file": "mouth/mouth_interior.png",
+      "x": 580,
+      "y": 616,
+      "w": 188,
+      "h": 78,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth_parts",
+      "bone": "mouth",
+      "notes": "Dark mouth interior of the OPEN shape (for part-based mouths)."
+    },
+    {
+      "id": "teeth_upper",
+      "file": "mouth/teeth_upper.png",
+      "x": 580,
+      "y": 616,
+      "w": 188,
+      "h": 20,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth_parts",
+      "bone": "mouth",
+      "notes": "Upper teeth band of the OPEN shape."
+    },
+    {
+      "id": "teeth_lower",
+      "file": "mouth/teeth_lower.png",
+      "x": 580,
+      "y": 617,
+      "w": 188,
+      "h": 77,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth_parts",
+      "bone": "mouth",
+      "notes": "Lower teeth band of the OPEN shape."
+    },
+    {
+      "id": "tongue",
+      "file": "mouth/tongue.png",
+      "x": 621,
+      "y": 649,
+      "w": 106,
+      "h": 45,
+      "scale": 1,
+      "kind": "generated",
+      "slot": "mouth_parts",
+      "bone": "mouth",
+      "notes": "Tongue of the OPEN shape."
+    },
+    {
+      "id": "hoodie_shoulders",
+      "file": "upper_body/hoodie_shoulders.png",
+      "x": 58,
+      "y": 670,
+      "w": 1129,
+      "h": 738,
+      "scale": 1,
+      "kind": "inpainted",
+      "slot": "hoodie",
+      "bone": "body",
+      "notes": "Hoodie, hood lining and collar; lining reconstructed behind the neck, cloth behind the drawstrings. Logo untouched."
+    },
+    {
+      "id": "hood_drawstrings",
+      "file": "upper_body/hood_drawstrings.png",
+      "x": 569,
+      "y": 878,
+      "w": 175,
+      "h": 161,
+      "scale": 1,
+      "kind": "extracted",
+      "slot": "drawstrings",
+      "bone": "body",
+      "notes": "Both drawstrings in one layer (split by x in the skeleton builder if separate bones are wanted)."
+    }
+  ]
+}

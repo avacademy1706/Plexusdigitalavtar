@@ -1,0 +1,21 @@
+{
+  "description": "Viseme group -> Spine attachment in slot 'mouth' (also available as one-frame animations 'visemes/<GROUP>').",
+  "slot": "mouth",
+  "groups": {
+    "REST": "mouth_rest",
+    "MBP": "mouth_MBP",
+    "FV": "mouth_FV",
+    "AI": "mouth_A",
+    "E": "mouth_E",
+    "O": "mouth_O",
+    "U": "mouth_U",
+    "L": "mouth_L",
+    "TH": "mouth_TH",
+    "CH_SH": "mouth_CH_SH",
+    "SMILE": "mouth_smile",
+    "OPEN": "mouth_open"
+  },
+  "extra": {
+    "I": "mouth_I (narrow 'ee' variant of E/AI)"
+  }
+}

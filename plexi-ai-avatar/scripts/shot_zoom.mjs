@@ -1,0 +1,11 @@
+import puppeteer from "puppeteer-core";
+const [,, out, qs = "", clipStr = ""] = process.argv;
+const b = await puppeteer.launch({ executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader"] });
+const p = await b.newPage();
+await p.setViewport({ width: 1440, height: 900, deviceScaleFactor: 3 });
+await p.goto("http://localhost:5173/" + qs, { waitUntil: "networkidle2" });
+await new Promise((r) => setTimeout(r, 4500));
+const clip = clipStr ? JSON.parse(clipStr) : { x: 380, y: 60, width: 320, height: 330 };
+await p.screenshot({ path: out, clip });
+await b.close();
+console.log("ok");

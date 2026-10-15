@@ -1,0 +1,25 @@
+{
+  "name": "plexi-spine-assets",
+  "version": "1.0.0",
+  "description": "- `Plexi_original_full_reference.png` — original user-supplied transparent PNG, preserved unchanged. - `Plexi_head_shoulders_reference.png` — crop of the original for head/shoulders work; reference only. - `Plexi_face_reference.png` — crop of the original face; reference only. - `Plexi_expression_reference_sheet.jpg` — generated visual reference for speech shapes, blinking and expressions. It has a background and is NOT a production sprite atlas or transparent cutout set. - `CLAUDE_CODE_PROMPT.md` — detailed implementation brief for Claude Code.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "artwork": "node scripts/prepare_artwork.mjs",
+    "skeleton": "node scripts/build_skeleton.mjs",
+    "validate": "node scripts/validate_skeleton.mjs",
+    "preview": "node scripts/render_preview.mjs",
+    "sheet": "node scripts/contact_sheet.mjs",
+    "all": "npm run artwork && npm run sheet && npm run skeleton && npm run validate && npm run preview && npm run export",
+    "export": "node scripts/export_web.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": "true",
+  "dependencies": {
+    "pngjs": "^7.0.0",
+    "sharp": "^0.35.5"
+  }
+}
