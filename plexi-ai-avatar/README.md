@@ -33,6 +33,8 @@ Voice needs a secure context: `http://localhost` or HTTPS.
 
 Without an Agent ID the site still loads; clicking *Talk to Plexi* shows a clear "not configured" message.
 
+Optional `ELEVENLABS_API_KEY` (server-side only, never bundled) lets the dev server / a Cloudflare Pages Function mint session credentials so the agent can be private - see `docs/PLEXI_AGENT_SETUP.md` section 4. The key needs the *Conversational AI* permission.
+
 ## Set up the agent and knowledge base
 
 See **[docs/PLEXI_AGENT_SETUP.md](docs/PLEXI_AGENT_SETUP.md)**: create the agent, paste the Plexi prompt, add `plexusdigitals.com` pages and PDFs as knowledge, make it public, copy the Agent ID.

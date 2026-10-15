@@ -5,7 +5,7 @@ const b = await puppeteer.launch({ executablePath: "C:/Program Files/Google/Chro
 const p = await b.newPage();
 await p.setViewport({ width: 1440, height: 900 });
 const log = [];
-p.on("console", (m) => (m.type() === "error" || m.type() === "warning") && log.push(`${m.type()}: ${m.text().slice(0, 160)}`));
+p.on("console", (m) => (m.type() === "error" || m.type() === "warning" || m.text().startsWith("[voice]")) && log.push(`${m.type()}: ${m.text().slice(0, 160)}`));
 p.on("pageerror", (e) => log.push("pageerror: " + e.message));
 await p.goto("http://localhost:5173/", { waitUntil: "networkidle2" });
 await new Promise((r) => setTimeout(r, 3000));

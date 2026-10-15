@@ -46,7 +46,21 @@ In **Security**:
 - Add your site's domain(s) to the **allowlist** (e.g. `localhost`, `plexusdigitals.com`, your Pages domain).
 - Optional: cap **max conversation duration** to control free-plan usage.
 
-## 4. Connect it
+## 4. Optional: server-side API key (private agent, key never in the browser)
+
+Add to `.env.local` (no `VITE_` prefix, so Vite never bundles it):
+
+```env
+ELEVENLABS_API_KEY=sk_...
+```
+
+The dev/preview server then exposes `GET /api/elevenlabs/token?type=webrtc|websocket`, which mints a short-lived session credential (WebRTC conversation token or WebSocket signed URL) with the key. The app uses that credential when available and only falls back to the bare agent ID if the endpoint answers 404/502. For hosting, `functions/api/elevenlabs/token.js` is the same endpoint as a Cloudflare Pages Function (free tier); set `ELEVENLABS_API_KEY` and `VITE_ELEVENLABS_AGENT_ID` as environment variables there.
+
+**The key must have the Conversational AI permission.** In ElevenLabs: profile menu -> *API Keys* -> edit the key (or create one) -> under permissions enable **Conversational AI** (read + write) -> save. A restricted key with no permissions is accepted by the API but every call returns 401 "missing the permission ...", and the app silently falls back to the public agent ID. Once the key has the permission you can also turn **authentication on** for the agent in Security; the website will keep working through the token endpoint.
+
+Rotate the key if it was ever pasted into a chat, ticket or screenshot.
+
+## 5. Connect it
 
 Copy the **Agent ID** (looks like `agent_...`) into `.env.local`:
 
@@ -56,7 +70,7 @@ VITE_ELEVENLABS_AGENT_ID=agent_xxxxxxxxxxxxxxxx
 
 Restart `npm run dev`.
 
-## Later
+## 6. Later
 
 - Hindi/English: add languages in the agent's Language settings.
 - Lead capture / CRM: add an ElevenLabs **client tool** or webhook that calls your backend, and implement `setLeadSink` in `src/services/leads.ts`.

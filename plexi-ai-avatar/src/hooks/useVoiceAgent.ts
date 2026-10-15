@@ -4,7 +4,7 @@ import { AvatarState, type SpeechAudioSource } from "../types/avatar";
 import type { ChatLine, ConnectionPhase, MicState, PlexiError } from "../types/conversation";
 import { env } from "../config/environment";
 import { analytics } from "../services/analytics";
-import { checkSupport, classifyError, requestMicrophone } from "../services/voiceAgent";
+import { checkSupport, classifyError, fetchSessionCredential, requestMicrophone } from "../services/voiceAgent";
 import { VisemeScheduler } from "../services/visemes";
 
 const CONNECT_TIMEOUT_MS = 20_000;
@@ -144,11 +144,14 @@ export function useVoiceAgent(): VoiceAgent {
     setPhase("connecting");
     try {
       // Voice sessions use WebRTC; text-only sessions use the WebSocket transport, which needs no media stack.
-      convRef.current.startSession({
-        agentId: env.elevenLabsAgentId,
-        connectionType: mic === "granted" ? "webrtc" : "websocket",
-        ...(mic === "granted" ? {} : { overrides: { conversation: { textOnly: true } } }),
-      });
+      const kind = mic === "granted" ? "webrtc" : "websocket";
+      const overrides = mic === "granted" ? {} : { overrides: { conversation: { textOnly: true } } };
+      // Prefer a server-minted credential (API key stays server-side, agent may be private); else the public agent ID.
+      const cred = await fetchSessionCredential(kind);
+      if (cred?.kind === "webrtc") convRef.current.startSession({ conversationToken: cred.conversationToken, connectionType: "webrtc", ...overrides });
+      else if (cred?.kind === "websocket") convRef.current.startSession({ signedUrl: cred.signedUrl, connectionType: "websocket", ...overrides });
+      else convRef.current.startSession({ agentId: env.elevenLabsAgentId, connectionType: kind, ...overrides });
+      if (env.isDev) console.info(`[voice] session via ${cred ? "server credential" : "public agent id"} (${kind})`);
     } catch (e) {
       setError(classifyError(e));
       setPhase("error");

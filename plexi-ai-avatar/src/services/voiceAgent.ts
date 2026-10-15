@@ -30,6 +30,26 @@ export async function requestMicrophone(): Promise<MicState> {
   }
 }
 
+/** Session credential minted server-side (see vite.config.ts / functions/api/elevenlabs/token.js). */
+export type SessionCredential = { kind: "webrtc"; conversationToken: string } | { kind: "websocket"; signedUrl: string };
+
+/**
+ * Ask the token endpoint for a credential. Returns null when the endpoint is absent or not configured,
+ * in which case the caller connects with the public agent ID instead.
+ */
+export async function fetchSessionCredential(kind: "webrtc" | "websocket"): Promise<SessionCredential | null> {
+  try {
+    const res = await fetch(`${import.meta.env.BASE_URL}api/elevenlabs/token?type=${kind}`.replace(/^\.\//, "/"), { cache: "no-store" });
+    if (!res.ok) return null;
+    const body = (await res.json()) as { conversationToken?: string; signedUrl?: string };
+    if (kind === "webrtc" && body.conversationToken) return { kind, conversationToken: body.conversationToken };
+    if (kind === "websocket" && body.signedUrl) return { kind, signedUrl: body.signedUrl };
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export function classifyError(e: unknown): PlexiError {
   const lower = (typeof e === "string" ? e : e instanceof Error ? e.message : JSON.stringify(e ?? "")).toLowerCase();
   if (/(timeout|timed out|network|fetch|offline)/.test(lower) || !navigator.onLine) {
