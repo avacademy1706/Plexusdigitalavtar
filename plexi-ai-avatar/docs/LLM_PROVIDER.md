@@ -18,7 +18,7 @@ https://aistudio.google.com -> *Get API key*, then:
 VITE_VOICE_PROVIDER=llm
 LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
 LLM_API_KEY=AIza...                     # Google AI Studio key (server-side only)
-LLM_MODEL=gemini-3.8-flash              # free tier; gemini-2.5-flash also free
+LLM_MODEL=gemini-3.5-flash-lite         # free tier, ~2 s replies; gemini-3.8-flash is smarter but ~5 s (thinking model)
 
 TTS_PROVIDER=gemini
 TTS_MODEL=gemini-3.8-flash-tts          # free tier; Hindi + 130 languages, auto-detected

@@ -56,7 +56,7 @@ export async function onRequestPost({ request, env }) {
       if (!audio) return fail(200, "no audio in response");
       const mime = (audio.mime ?? "").toLowerCase();
       const format = /l16|pcm/.test(mime) ? "pcm16" : /mp3|mpeg/.test(mime) ? "mp3" : /ogg|opus/.test(mime) ? "ogg" : "wav";
-      return json(200, { provider, format, sampleRate: 24000, audio: audio.data });
+      return json(200, { provider, voice: `gemini:${env.TTS_VOICE || "Puck"}`, format, sampleRate: 24000, audio: audio.data });
     }
     if (provider === "elevenlabs") {
       const voice = env.TTS_VOICE || "SXuKWBhKoIoAHKlf6Gt3";
@@ -70,7 +70,7 @@ export async function onRequestPost({ request, env }) {
       const body = JSON.parse(raw);
       if (!body.audio_base64) return fail(200, "no audio in response");
       const a = body.alignment;
-      return json(200, { provider, format: "mp3", audio: body.audio_base64, ...(a ? { alignment: { characters: a.characters, starts: a.character_start_times_seconds, ends: a.character_end_times_seconds } } : {}) });
+      return json(200, { provider, voice: `elevenlabs:${voice}`, format: "mp3", audio: body.audio_base64, ...(a ? { alignment: { characters: a.characters, starts: a.character_start_times_seconds, ends: a.character_end_times_seconds } } : {}) });
     }
     if (provider === "openai") {
       const base = (env.TTS_BASE_URL || env.LLM_BASE_URL || "").replace(/\/+$/, "");
@@ -81,7 +81,7 @@ export async function onRequestPost({ request, env }) {
         body: JSON.stringify({ model: env.TTS_MODEL || "tts-1", voice: env.TTS_VOICE || "alloy", input: text, response_format: "mp3" }),
       });
       if (!r.ok) return fail(r.status, await r.text());
-      return json(200, { provider, format: "mp3", audio: bytesToBase64(new Uint8Array(await r.arrayBuffer())) });
+      return json(200, { provider, voice: `openai:${env.TTS_VOICE || "alloy"}`, format: "mp3", audio: bytesToBase64(new Uint8Array(await r.arrayBuffer())) });
     }
     return json(503, { error: `unknown TTS_PROVIDER ${provider}` });
   } catch (e) {

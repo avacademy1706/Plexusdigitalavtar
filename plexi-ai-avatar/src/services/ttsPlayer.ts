@@ -14,6 +14,49 @@ export interface TtsPayload {
   /** optional exact timing (seconds) per character of `text` */
   alignment?: { characters: string[]; starts: number[]; ends: number[] };
   provider?: string;
+  /** voice id the server used; cached clips are only reused for the same voice */
+  voice?: string;
+}
+
+// ---- small LRU cache of clips in localStorage: the greeting, fillers and repeated answers become instant ----
+const CACHE_KEY = "plexi.tts.v1";
+const CACHE_BUDGET = 3_000_000; // characters of base64 (~2.2 MB audio) - well under the 5 MB localStorage limit
+type CacheEntry = { k: string; p: TtsPayload; t: number };
+
+function readCache(): CacheEntry[] {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    return raw ? (JSON.parse(raw) as CacheEntry[]) : [];
+  } catch {
+    return [];
+  }
+}
+function writeCache(entries: CacheEntry[]): void {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(entries));
+  } catch {
+    /* quota or private mode - caching is best effort */
+  }
+}
+export function cachedTts(text: string): TtsPayload | null {
+  const hit = readCache().find((e) => e.k === text);
+  return hit ? hit.p : null;
+}
+function rememberTts(text: string, p: TtsPayload): void {
+  if (p.audio.length > 900_000) return; // skip very long clips
+  let entries = readCache().filter((e) => e.k !== text);
+  entries.push({ k: text, p, t: Date.now() });
+  entries.sort((a, b) => a.t - b.t);
+  let size = entries.reduce((n, e) => n + e.p.audio.length, 0);
+  while (size > CACHE_BUDGET && entries.length > 1) size -= entries.shift()!.p.audio.length;
+  writeCache(entries);
+}
+/** Drop cached clips made with another voice (called when the server reports the active voice). */
+function pruneOtherVoices(voice: string | undefined): void {
+  if (!voice) return;
+  const entries = readCache();
+  const kept = entries.filter((e) => !e.p.voice || e.p.voice === voice);
+  if (kept.length !== entries.length) writeCache(kept);
 }
 
 const endpoint = `${import.meta.env.BASE_URL}api/tts`.replace(/^\.\//, "/");
@@ -23,12 +66,17 @@ let cloudTtsUnavailable = false;
 
 export async function fetchTts(text: string, signal?: AbortSignal): Promise<TtsPayload | null> {
   if (cloudTtsUnavailable) return null;
+  const cached = cachedTts(text);
+  if (cached) return cached;
   try {
     const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }), signal });
     if (res.status === 404 || res.status === 503) cloudTtsUnavailable = true;
     if (!res.ok) return null; // 404/503 = not configured, 502 = provider failed -> caller falls back to browser TTS
     const body = (await res.json()) as TtsPayload;
-    return typeof body.audio === "string" && body.audio.length > 0 ? body : null;
+    if (typeof body.audio !== "string" || body.audio.length === 0) return null;
+    pruneOtherVoices(body.voice);
+    rememberTts(text, body);
+    return body;
   } catch {
     return null;
   }

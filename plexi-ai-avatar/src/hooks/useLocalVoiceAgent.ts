@@ -6,7 +6,15 @@ import { analytics } from "../services/analytics";
 import { requestMicrophone } from "../services/voiceAgent";
 import { chatCompletion, trimHistory, type ChatTurn } from "../services/llmChat";
 import { VisemeScheduler } from "../services/visemes";
-import { TtsPlayer, fetchTts } from "../services/ttsPlayer";
+import { TtsPlayer, fetchTts, cachedTts } from "../services/ttsPlayer";
+
+/**
+ * Cloud TTS has a fixed ~5 s latency, so right after the visitor finishes speaking Plexi says a short,
+ * pre-generated filler while the real answer is being produced. Clips are fetched once and cached.
+ */
+const FILLERS = ["Sure, let me check that for you.", "Good question, one moment.", "Let me think about that."];
+/** Only play a filler if the answer is not already here after this many ms. */
+const FILLER_AFTER_MS = 350;
 import { PLEXI_GREETING, PLEXI_SYSTEM_PROMPT } from "../content/plexiPersona";
 import type { VoiceAgent } from "./useVoiceAgent";
 
@@ -82,6 +90,8 @@ export function useLocalVoiceAgent(): VoiceAgent {
   const abort = useRef<AbortController | null>(null);
   const speakingRef = useRef(false);
   const player = useRef(new TtsPlayer());
+  const cloudVoice = useRef(false); // true once /api/tts delivered a clip this session
+  const fillerIndex = useRef(0);
 
   const addLine = useCallback((role: ChatLine["role"], text: string) => {
     const t = text.trim();
@@ -152,6 +162,7 @@ export function useLocalVoiceAgent(): VoiceAgent {
       if (p.available) {
         const payload = await fetchTts(text, abort.current?.signal);
         if (payload) {
+          cloudVoice.current = true;
           try {
             speakingRef.current = true;
             setActivity("speaking");
@@ -181,14 +192,42 @@ export function useLocalVoiceAgent(): VoiceAgent {
       setActivity("thinking");
       abort.current?.abort();
       abort.current = new AbortController();
+      // filler: starts after a short grace period, only with a cached cloud clip (never a different voice)
+      let filler: Promise<void> | null = null;
+      const fillerTimer = window.setTimeout(() => {
+        const p = player.current;
+        if (!cloudVoice.current || !p.available || p.speaking) return;
+        const text = FILLERS[fillerIndex.current++ % FILLERS.length]!;
+        const clip = cachedTts(text);
+        if (!clip) return;
+        filler = p.play(text, clip).catch(() => undefined);
+        setActivity("speaking");
+        void filler.then(() => setActivity((a) => (a === "speaking" ? "thinking" : a)));
+      }, FILLER_AFTER_MS);
       try {
         const { reply } = await chatCompletion(trimHistory(history.current), abort.current.signal);
+        window.clearTimeout(fillerTimer);
         if (phaseRef.current !== "connected") return;
         history.current.push({ role: "assistant", content: reply });
         addLine("plexi", reply);
         analytics.track("plexi_response");
-        await speak(reply);
+        // fetch the answer audio while the filler is still playing, then play it right after
+        const answerAudio = player.current.available ? fetchTts(reply, abort.current.signal) : Promise.resolve(null);
+        if (filler) await filler;
+        const payload = await answerAudio;
+        if (phaseRef.current !== "connected") return;
+        if (payload) {
+          cloudVoice.current = true;
+          speakingRef.current = true;
+          setActivity("speaking");
+          try {
+            await player.current.play(reply, payload);
+          } finally {
+            speakingRef.current = player.current.speaking;
+          }
+        } else await speak(reply);
       } catch (e) {
+        window.clearTimeout(fillerTimer);
         if ((e as Error).name === "AbortError") return;
         if (env.isDev) console.warn("[llm] chat failed", e);
         setError({ code: "network", message: "Plexi couldn't answer right now. Try again or reconnect." });
@@ -267,6 +306,15 @@ export function useLocalVoiceAgent(): VoiceAgent {
     await speak(PLEXI_GREETING);
     setActivity("idle");
     if (useMic) startListening();
+    if (cloudVoice.current) {
+      // warm the filler clips in the background, one at a time (free-tier rate limits)
+      void (async () => {
+        for (const text of FILLERS) {
+          if (phaseRef.current !== "connected") return;
+          if (!cachedTts(text)) await fetchTts(text);
+        }
+      })();
+    }
   }, [addLine, speak, startListening]);
 
   const end = useCallback(async () => {

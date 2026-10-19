@@ -23,7 +23,7 @@ import {
 const HEIGHT = 1.75;
 const DEG = Math.PI / 180;
 const FADE = 0.35;
-const MOUTH_HOLD = 0.05;
+const MOUTH_HOLD = 0.08;
 
 interface Props {
   skeleton: SpineSkeleton;

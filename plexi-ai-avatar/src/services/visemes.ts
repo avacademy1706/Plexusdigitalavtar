@@ -62,6 +62,29 @@ interface Event {
 
 const MIN_CHAR_MS = 45;
 const KEEP_PAST_MS = 150;
+/** Shortest mouth shape we show. Letters shorter than this are merged into syllable-length events (vowels win). */
+const MIN_EVENT_MS = 90;
+const VOWEL_GROUPS = new Set<VisemeGroup>(["AI", "E", "O", "U", "OPEN"]);
+
+/** Merge per-character events into readable syllables: a shape must last >= MIN_EVENT_MS, vowels take priority. */
+function mergeShort(events: Event[]): Event[] {
+  const out: Event[] = [];
+  for (const e of events) {
+    const prev = out[out.length - 1];
+    if (prev && prev.t1 - prev.t0 < MIN_EVENT_MS && prev.viseme !== "REST") {
+      // extend the previous (too short) shape with this character; keep a vowel shape if either is one
+      const viseme = VOWEL_GROUPS.has(prev.viseme) ? prev.viseme : VOWEL_GROUPS.has(e.viseme) ? e.viseme : prev.viseme;
+      out[out.length - 1] = { t0: prev.t0, t1: e.t1, viseme, shape: GROUP_TARGET[viseme] };
+      continue;
+    }
+    if (prev && prev.viseme === e.viseme) {
+      out[out.length - 1] = { ...prev, t1: e.t1 };
+      continue;
+    }
+    out.push({ ...e });
+  }
+  return out;
+}
 
 export class VisemeScheduler {
   private events: Event[] = [];
@@ -75,6 +98,7 @@ export class VisemeScheduler {
     const base = Math.max(now, this.cursor);
     let end = base;
     let prevViseme: VisemeGroup | null = null;
+    const batch: Event[] = [];
     for (let i = 0; i < chars.length; i++) {
       const ch = chars[i];
       if (ch === undefined) continue;
@@ -84,10 +108,11 @@ export class VisemeScheduler {
       const t1 = t0 + dur;
       let viseme = charToViseme(ch, chars[i + 1], i);
       if (prevViseme === "TH" && ch.toLowerCase() === "h") viseme = "TH";
-      this.events.push({ t0, t1, viseme, shape: GROUP_TARGET[viseme] });
+      batch.push({ t0, t1, viseme, shape: GROUP_TARGET[viseme] });
       prevViseme = viseme;
       if (t1 > end) end = t1;
     }
+    this.events.push(...mergeShort(batch));
     this.cursor = end;
   }
 

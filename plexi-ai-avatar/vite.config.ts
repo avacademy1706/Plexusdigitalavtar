@@ -219,7 +219,7 @@ function ttsProxyPlugin(env: Record<string, string>): Plugin {
         if (!audio) return fail(200, "no audio in response");
         const mime = (audio.mime ?? "").toLowerCase();
         const format = /l16|pcm/.test(mime) ? "pcm16" : /mp3|mpeg/.test(mime) ? "mp3" : /ogg|opus/.test(mime) ? "ogg" : "wav";
-        res.end(JSON.stringify({ provider, format, sampleRate: 24000, audio: audio.data }));
+        res.end(JSON.stringify({ provider, voice: `gemini:${voice}`, format, sampleRate: 24000, audio: audio.data }));
         return;
       }
       if (provider === "elevenlabs") {
@@ -234,7 +234,7 @@ function ttsProxyPlugin(env: Record<string, string>): Plugin {
         const body = JSON.parse(raw) as { audio_base64?: string; alignment?: { characters: string[]; character_start_times_seconds: number[]; character_end_times_seconds: number[] } };
         if (!body.audio_base64) return fail(200, "no audio in response");
         const a = body.alignment;
-        res.end(JSON.stringify({ provider, format: "mp3", audio: body.audio_base64, ...(a ? { alignment: { characters: a.characters, starts: a.character_start_times_seconds, ends: a.character_end_times_seconds } } : {}) }));
+        res.end(JSON.stringify({ provider, voice: `elevenlabs:${voice}`, format: "mp3", audio: body.audio_base64, ...(a ? { alignment: { characters: a.characters, starts: a.character_start_times_seconds, ends: a.character_end_times_seconds } } : {}) }));
         return;
       }
       if (provider === "openai") {
@@ -247,7 +247,7 @@ function ttsProxyPlugin(env: Record<string, string>): Plugin {
         });
         if (!r.ok) return fail(r.status, await r.text());
         const bytes = Buffer.from(await r.arrayBuffer());
-        res.end(JSON.stringify({ provider, format: "mp3", audio: bytes.toString("base64") }));
+        res.end(JSON.stringify({ provider, voice: `openai:${env.TTS_VOICE || "alloy"}`, format: "mp3", audio: bytes.toString("base64") }));
         return;
       }
       res.statusCode = 503;
