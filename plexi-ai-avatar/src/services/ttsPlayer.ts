@@ -18,9 +18,14 @@ export interface TtsPayload {
 
 const endpoint = `${import.meta.env.BASE_URL}api/tts`.replace(/^\.\//, "/");
 
+/** Set after the proxy answers 404/503 (no cloud TTS configured) so we stop asking for the rest of the session. */
+let cloudTtsUnavailable = false;
+
 export async function fetchTts(text: string, signal?: AbortSignal): Promise<TtsPayload | null> {
+  if (cloudTtsUnavailable) return null;
   try {
     const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }), signal });
+    if (res.status === 404 || res.status === 503) cloudTtsUnavailable = true;
     if (!res.ok) return null; // 404/503 = not configured, 502 = provider failed -> caller falls back to browser TTS
     const body = (await res.json()) as TtsPayload;
     return typeof body.audio === "string" && body.audio.length > 0 ? body : null;
