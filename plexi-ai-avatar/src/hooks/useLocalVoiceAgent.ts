@@ -307,13 +307,10 @@ export function useLocalVoiceAgent(): VoiceAgent {
     setActivity("idle");
     if (useMic) startListening();
     if (cloudVoice.current) {
-      // warm the filler clips in the background, one at a time (free-tier rate limits)
-      void (async () => {
-        for (const text of FILLERS) {
-          if (phaseRef.current !== "connected") return;
-          if (!cachedTts(text)) await fetchTts(text);
-        }
-      })();
+      // warm ONE missing filler clip per session (free tiers are tiny - Gemini TTS allows 10 requests/day);
+      // clips persist in localStorage, so after a few sessions all fillers are cached
+      const missing = FILLERS.find((t) => !cachedTts(t));
+      if (missing) void fetchTts(missing);
     }
   }, [addLine, speak, startListening]);
 

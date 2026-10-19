@@ -223,11 +223,11 @@ function ttsProxyPlugin(env: Record<string, string>): Plugin {
         return;
       }
       if (provider === "elevenlabs") {
-        const voice = env.TTS_VOICE || "SXuKWBhKoIoAHKlf6Gt3";
+        const voice = env.TTS_VOICE || "cjVigY5qzO86Huf0OWal";
         const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voice)}/with-timestamps?output_format=mp3_44100_128`, {
           method: "POST",
           headers: { "Content-Type": "application/json", "xi-api-key": key },
-          body: JSON.stringify({ text, model_id: env.TTS_MODEL || "eleven_multilingual_v2" }),
+          body: JSON.stringify({ text, model_id: env.TTS_MODEL || "eleven_flash_v2_5" }),
         });
         const raw = await r.text();
         if (!r.ok) return fail(r.status, raw);

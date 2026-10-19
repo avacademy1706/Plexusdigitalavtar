@@ -71,7 +71,16 @@ export async function fetchTts(text: string, signal?: AbortSignal): Promise<TtsP
   try {
     const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }), signal });
     if (res.status === 404 || res.status === 503) cloudTtsUnavailable = true;
-    if (!res.ok) return null; // 404/503 = not configured, 502 = provider failed -> caller falls back to browser TTS
+    if (res.status === 502) {
+      // provider rejected us - if it is a quota/rate limit, stop asking for the rest of the session
+      const err = String(((await res.json().catch(() => ({}))) as { error?: string }).error ?? "");
+      if (/429|rate limit|quota|too_many_requests/i.test(err)) {
+        cloudTtsUnavailable = true;
+        console.warn("[tts] cloud voice quota reached - using the browser voice for the rest of this session:", err.slice(0, 160));
+      }
+      return null;
+    }
+    if (!res.ok) return null;
     const body = (await res.json()) as TtsPayload;
     if (typeof body.audio !== "string" || body.audio.length === 0) return null;
     pruneOtherVoices(body.voice);
