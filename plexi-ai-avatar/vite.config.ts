@@ -101,10 +101,13 @@ function chatProxyPlugin(env: Record<string, string>): Plugin {
       return;
     }
     try {
+      // Thinking models (Gemini 3.x) spend tokens on reasoning before the visible answer, so the budget must be
+      // well above the ~60-token replies we want; low reasoning effort keeps voice latency down.
+      const gemini = /generativelanguage\.googleapis\.com/.test(baseUrl);
       const r = await fetch(`${baseUrl}/chat/completions`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
-        body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 220 }),
+        body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 400, ...(gemini ? { reasoning_effort: "low" } : {}) }),
       });
       const body = (await r.json().catch(() => ({}))) as { choices?: { message?: { content?: string } }[]; error?: { message?: string } | string };
       if (!r.ok) {

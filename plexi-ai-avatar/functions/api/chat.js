@@ -22,10 +22,12 @@ export async function onRequestPost({ request, env }) {
     return new Response(JSON.stringify({ error: "LLM not configured: set LLM_BASE_URL, LLM_API_KEY and LLM_MODEL" }), { status: 503, headers });
   }
   try {
+    // Thinking models (Gemini 3.x) spend tokens on reasoning first; keep the budget high and reasoning low.
+    const gemini = /generativelanguage\.googleapis\.com/.test(baseUrl);
     const r = await fetch(`${baseUrl}/chat/completions`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: `Bearer ${env.LLM_API_KEY}` },
-      body: JSON.stringify({ model: env.LLM_MODEL, messages, temperature: 0.6, max_tokens: 220 }),
+      body: JSON.stringify({ model: env.LLM_MODEL, messages, temperature: 0.6, max_tokens: 400, ...(gemini ? { reasoning_effort: "low" } : {}) }),
     });
     const body = await r.json().catch(() => ({}));
     if (!r.ok) {
