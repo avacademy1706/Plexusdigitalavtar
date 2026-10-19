@@ -2,7 +2,7 @@
 
 A browser-based conversational AI avatar for **Plexus Digitals** (https://plexusdigitals.com/). Visitors click **Talk to Plexi**, speak or type, hear Plexi answer, and see Plexi's eyes, brows and lips move.
 
-Two interchangeable voice providers (`VITE_VOICE_PROVIDER`): **`llm`** (current default - browser speech recognition + an OpenAI-compatible LLM such as **Kimi** or Grok behind a server-side proxy + browser text-to-speech) and **`elevenlabs`** (ElevenLabs Conversational AI agent with its own voice and knowledge base). See `docs/LLM_PROVIDER.md`.
+Two interchangeable voice providers (`VITE_VOICE_PROVIDER`): **`llm`** (current default - browser speech recognition + an OpenAI-compatible LLM behind a server-side proxy + cloud or browser text-to-speech; the free **Google Gemini** tier covers both LLM and TTS with one key) and **`elevenlabs`** (ElevenLabs Conversational AI agent with its own voice and knowledge base). See `docs/LLM_PROVIDER.md`.
 
 ## Tech stack
 
@@ -12,12 +12,12 @@ React 19 · TypeScript · Vite · Three.js · React Three Fiber · drei · Tailw
 
 ```
 llm provider (default):
-  mic ─► Web Speech API ─► POST /api/chat (server-side key) ─► Kimi / Grok ─► speechSynthesis ─► visemes ─► rig
+  mic ─► Web Speech API ─► POST /api/chat (server-side key) ─► Gemini / Groq / Kimi / Grok ─► POST /api/tts (Gemini / ElevenLabs / OpenAI-style, or browser voice) ─► visemes ─► rig
 elevenlabs provider:
   Browser ── WebRTC ──► ElevenLabs agent (voice, LLM, knowledge base) ─► character alignment ─► visemes ─► rig
 ```
 
-The only server code is two tiny proxies (`/api/chat`, `/api/elevenlabs/token`) that keep API keys out of the browser - Vite middleware in dev, Cloudflare Pages Functions in production.
+The only server code is three tiny proxies (`/api/chat`, `/api/tts`, `/api/elevenlabs/token`) that keep API keys out of the browser - Vite middleware in dev, Cloudflare Pages Functions in production.
 
 ## Quick start
 

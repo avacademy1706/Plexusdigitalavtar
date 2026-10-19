@@ -6,12 +6,14 @@ import { analytics } from "../services/analytics";
 import { requestMicrophone } from "../services/voiceAgent";
 import { chatCompletion, trimHistory, type ChatTurn } from "../services/llmChat";
 import { VisemeScheduler } from "../services/visemes";
+import { TtsPlayer, fetchTts } from "../services/ttsPlayer";
 import { PLEXI_GREETING, PLEXI_SYSTEM_PROMPT } from "../content/plexiPersona";
 import type { VoiceAgent } from "./useVoiceAgent";
 
 /**
  * Self-hosted voice loop built only from free browser APIs plus an OpenAI-compatible LLM behind /api/chat:
- *   microphone -> Web Speech API (SpeechRecognition) -> LLM (Kimi / Grok ...) -> speechSynthesis -> visemes.
+ *   microphone -> Web Speech API (SpeechRecognition) -> LLM via /api/chat -> cloud TTS via /api/tts (Gemini,
+ *   ElevenLabs, OpenAI-style) played through Web Audio, or browser speechSynthesis when no cloud TTS is set -> visemes.
  * Same `VoiceAgent` interface as the ElevenLabs hook, so the UI and the avatar do not care which one runs.
  *
  * Limits: SpeechRecognition exists in Chrome, Edge and Safari (not Firefox) and streams audio to the
@@ -79,6 +81,7 @@ export function useLocalVoiceAgent(): VoiceAgent {
   const seq = useRef(0);
   const abort = useRef<AbortController | null>(null);
   const speakingRef = useRef(false);
+  const player = useRef(new TtsPlayer());
 
   const addLine = useCallback((role: ChatLine["role"], text: string) => {
     const t = text.trim();
@@ -88,7 +91,7 @@ export function useLocalVoiceAgent(): VoiceAgent {
   }, []);
 
   // ---- text to speech + viseme scheduling ----------------------------------------------------
-  const speak = useCallback(
+  const speakBrowser = useCallback(
     (text: string) =>
       new Promise<void>((resolve) => {
         if (!("speechSynthesis" in window)) return resolve();
@@ -140,6 +143,30 @@ export function useLocalVoiceAgent(): VoiceAgent {
         speechSynthesis.speak(u);
       }),
     [],
+  );
+
+  /** Cloud voice first (/api/tts: Gemini / ElevenLabs / OpenAI-style), browser voice as the fallback. */
+  const speak = useCallback(
+    async (text: string) => {
+      const p = player.current;
+      if (p.available) {
+        const payload = await fetchTts(text, abort.current?.signal);
+        if (payload) {
+          try {
+            speakingRef.current = true;
+            setActivity("speaking");
+            await p.play(text, payload);
+            return;
+          } catch (e) {
+            if (env.isDev) console.warn("[tts] cloud playback failed, falling back to browser voice", e);
+          } finally {
+            speakingRef.current = p.speaking;
+          }
+        }
+      }
+      await speakBrowser(text);
+    },
+    [speakBrowser],
   );
 
   // ---- one conversational turn ----------------------------------------------------------------
@@ -219,6 +246,7 @@ export function useLocalVoiceAgent(): VoiceAgent {
 
   // ---- session control ------------------------------------------------------------------------
   const start = useCallback(async () => {
+    player.current.unlock(); // inside the click gesture so Web Audio may play
     setError(null);
     setPhase("requesting-mic");
     const mic = await requestMicrophone();
@@ -244,6 +272,7 @@ export function useLocalVoiceAgent(): VoiceAgent {
   const end = useCallback(async () => {
     abort.current?.abort();
     recognition.current?.abort();
+    player.current.stop();
     if ("speechSynthesis" in window) speechSynthesis.cancel();
     speakingRef.current = false;
     visemes.current.clear();
@@ -277,10 +306,10 @@ export function useLocalVoiceAgent(): VoiceAgent {
 
   const audio = useMemo<SpeechAudioSource>(
     () => ({
-      getVolume: () => (speakingRef.current ? 0.45 : 0),
-      getFrequencyData: () => new Uint8Array(0),
-      getMouth: () => visemes.current.sample(),
-      getViseme: () => visemes.current.sampleViseme(),
+      getVolume: () => (player.current.speaking ? Math.max(0.12, player.current.getVolume()) : speakingRef.current ? 0.45 : 0),
+      getFrequencyData: () => (player.current.speaking ? player.current.getFrequencyData() : new Uint8Array(0)),
+      getMouth: () => (player.current.speaking ? player.current.visemes.sample() : visemes.current.sample()),
+      getViseme: () => (player.current.speaking ? player.current.visemes.sampleViseme() : visemes.current.sampleViseme()),
     }),
     [],
   );
