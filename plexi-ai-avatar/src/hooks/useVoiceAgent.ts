@@ -33,6 +33,7 @@ export interface VoiceAgent {
  * Voice + text conversation with Plexi via an ElevenLabs Agent.
  * Must be rendered inside <ConversationProvider>.
  */
+/** ElevenLabs Conversational AI provider. Selected with VITE_VOICE_PROVIDER=elevenlabs (see useAgent.ts). */
 export function useVoiceAgent(): VoiceAgent {
   const [phase, setPhase] = useState<ConnectionPhase>("idle");
   const [error, setError] = useState<PlexiError | null>(null);

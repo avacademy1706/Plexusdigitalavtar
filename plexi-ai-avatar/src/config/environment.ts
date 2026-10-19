@@ -4,8 +4,16 @@
  * The browser only needs the public ElevenLabs *Agent ID* - there is no API key in the frontend.
  * (The agent must be set to "public" / authentication off in the ElevenLabs dashboard.)
  */
+const read = (key: string) => ((import.meta.env[key] as string | undefined) ?? "").trim();
+
 export const env = {
-  elevenLabsAgentId: (import.meta.env.VITE_ELEVENLABS_AGENT_ID as string | undefined)?.trim() ?? "",
+  /** "llm" (default: browser STT/TTS + Kimi/Grok via /api/chat) or "elevenlabs". */
+  voiceProvider: (read("VITE_VOICE_PROVIDER") || "llm") as "llm" | "elevenlabs",
+  elevenLabsAgentId: read("VITE_ELEVENLABS_AGENT_ID"),
+  /** Speech-recognition language for the llm provider (BCP-47), e.g. en-IN, hi-IN. */
+  sttLang: read("VITE_STT_LANG") || "en-IN",
+  /** Optional exact speechSynthesis voice name to force for Plexi (see your browser's voice list). */
+  ttsVoice: read("VITE_TTS_VOICE"),
   isDev: import.meta.env.DEV,
 } as const;
 

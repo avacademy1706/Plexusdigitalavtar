@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useMemo, useState } from "react";
-import { useVoiceAgent } from "./hooks/useVoiceAgent";
+import { useAgent } from "./hooks/useAgent";
 import { useSession } from "./hooks/useSession";
 import { ChatPanel } from "./components/chat/ChatPanel";
 import { LeadForm } from "./components/ui/LeadForm";
@@ -14,7 +14,7 @@ import { AvatarState, type AvatarKind } from "./types/avatar";
 const Experience = lazy(() => import("./components/scene/Experience"));
 
 export default function App() {
-  const agent = useVoiceAgent();
+  const agent = useAgent();
   const sessionId = useSession();
   const [sceneReady, setSceneReady] = useState(false);
   const [leadOpen, setLeadOpen] = useState(false);

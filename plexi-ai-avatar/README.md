@@ -2,36 +2,35 @@
 
 A browser-based conversational AI avatar for **Plexus Digitals** (https://plexusdigitals.com/). Visitors click **Talk to Plexi**, speak or type, hear Plexi answer, and see Plexi's eyes, brows and lips move.
 
-Voice and answers come from an **ElevenLabs Conversational AI agent** whose knowledge base is the Plexus Digitals website and your PDFs.
+Two interchangeable voice providers (`VITE_VOICE_PROVIDER`): **`llm`** (current default - browser speech recognition + an OpenAI-compatible LLM such as **Kimi** or Grok behind a server-side proxy + browser text-to-speech) and **`elevenlabs`** (ElevenLabs Conversational AI agent with its own voice and knowledge base). See `docs/LLM_PROVIDER.md`.
 
 ## Tech stack
 
-React 19 · TypeScript · Vite · Three.js · React Three Fiber · drei · Tailwind CSS v4 · Lucide · `@elevenlabs/react`
+React 19 · TypeScript · Vite · Three.js · React Three Fiber · drei · Tailwind CSS v4 · Lucide · Web Speech API · `@elevenlabs/react` (optional provider)
 
 ## How it works
 
 ```
-Browser ── WebRTC ──► ElevenLabs agent (voice, LLM, knowledge base)
-   │
-   ├─ React UI: chat panel, voice button, lead form
-   ├─ R3F scene: studio + Plexi illustration (or GLB)
-   └─ Lip sync: agent voice level/spectrum ─► mouth shape; idle eyes/brows/lips via shader
+llm provider (default):
+  mic ─► Web Speech API ─► POST /api/chat (server-side key) ─► Kimi / Grok ─► speechSynthesis ─► visemes ─► rig
+elevenlabs provider:
+  Browser ── WebRTC ──► ElevenLabs agent (voice, LLM, knowledge base) ─► character alignment ─► visemes ─► rig
 ```
 
-No backend. The browser only needs the public **Agent ID**.
+The only server code is two tiny proxies (`/api/chat`, `/api/elevenlabs/token`) that keep API keys out of the browser - Vite middleware in dev, Cloudflare Pages Functions in production.
 
 ## Quick start
 
 ```bash
 npm install
-cp .env.example .env.local      # add VITE_ELEVENLABS_AGENT_ID
+cp .env.example .env.local      # pick the provider; add LLM_API_KEY (Kimi/Grok) or the ElevenLabs agent ID
 npm run dev                     # http://localhost:5173
 npm run build                   # type-check + production build -> dist/
 ```
 
 Voice needs a secure context: `http://localhost` or HTTPS.
 
-Without an Agent ID the site still loads; clicking *Talk to Plexi* shows a clear "not configured" message.
+`LLM_PROVIDER=mock` runs the whole loop with canned answers and no key. Without any provider configured the site still loads; *Talk to Plexi* then shows a clear "not configured" message.
 
 Optional `ELEVENLABS_API_KEY` (server-side only, never bundled) lets the dev server / a Cloudflare Pages Function mint session credentials so the agent can be private - see `docs/PLEXI_AGENT_SETUP.md` section 4. The key needs the *Conversational AI* permission.
 
