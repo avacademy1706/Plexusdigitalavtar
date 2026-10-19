@@ -93,4 +93,4 @@ LLM_PROVIDER=mock
 
 ## Hosting
 
-Cloudflare Pages: set `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL` (and optionally `LLM_PROVIDER`) as environment variables; `functions/api/chat.js` deploys automatically with the site. Netlify/Vercel: port that one function to their format.
+Vercel (`api/*.js`) and Cloudflare Pages (`functions/api/*.js`) adapters are included; both call `server/providers.mjs`. Set the same variables as in `.env.local` in the host's environment settings (see README -> Deploying). Netlify: port the two-line adapters to its function format.

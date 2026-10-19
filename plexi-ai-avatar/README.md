@@ -52,9 +52,31 @@ See **[docs/PLEXI_AGENT_SETUP.md](docs/PLEXI_AGENT_SETUP.md)**: create the agent
 - `?gaze=-1,0` - freezes the eyes looking left (x,y in -1..1).
 - `?quality=low|medium|high` - force a quality preset.
 
-## Free hosting
+## Deploying (free tiers)
 
-Static build (`dist/`) on Cloudflare Pages, GitHub Pages, Netlify or Vercel free tiers. Add the hosted domain to the agent's allowlist.
+The site is a static build plus three tiny API routes that keep the keys server-side. The provider logic lives once in `server/providers.mjs`; each host has a thin adapter:
+
+| Host | Functions | Where to set env vars |
+| --- | --- | --- |
+| **Vercel** | `api/chat.js`, `api/tts.js`, `api/elevenlabs/token.js` (auto-detected) | Project -> Settings -> Environment Variables |
+| **Cloudflare Pages** | `functions/api/*.js` (auto-detected) | Project -> Settings -> Variables and Secrets |
+| Vite dev / preview | middleware in `vite.config.ts` | `.env.local` |
+
+**Vercel setup:** import the GitHub repo, set **Root Directory = `plexi-ai-avatar`** (framework preset: Vite), then add these environment variables (Production + Preview) and redeploy:
+
+```
+VITE_VOICE_PROVIDER=llm
+LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
+LLM_API_KEY=<Google AI Studio key>
+LLM_MODEL=gemini-3.5-flash-lite
+TTS_PROVIDER=elevenlabs
+TTS_MODEL=eleven_flash_v2_5
+TTS_VOICE=cjVigY5qzO86Huf0OWal
+ELEVENLABS_API_KEY=<ElevenLabs key with Text to Speech permission>
+VITE_STT_LANG=en-IN
+```
+
+Without them the deployed site answers 404 on `/api/chat` and `/api/tts`: chat shows "Plexi couldn't answer right now" and the voice falls back to the device's browser voice (often female on phones). `VITE_*` values are baked in at build time, so change them -> redeploy. GitHub Pages / Netlify static hosting cannot run the API routes.
 
 ## Services & limits
 
